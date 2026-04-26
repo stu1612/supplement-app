@@ -1,26 +1,398 @@
 @import "tailwindcss";
 
+/* ========================================
+   THEME TOKENS (Tailwind v4)
+   These generate utilities like:
+   bg-bg-dark, text-text-primary, border-border, bg-accent, font-sans
+======================================== */
+
+@theme {
+  /* Colors */
+  --color-bg-dark: #181818;
+  --color-bg-dark-secondary: #121212;
+  --color-bg-light: #f5f5f5;
+  --color-surface: #1f1f1f;
+  --color-border: #2a2a2a;
+  --color-accent: #c9a24a;
+
+  --color-strawberry: #c0392b;
+  --color-blueberry: #2d3a9e;
+  --color-vanilla: #f3e5ab;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-dark: #181818;
+  --color-text-dark-secondary: #4a4a4a;
+
+  /* Typography */
+  --font-sans: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ========================================
+   ROOT TOKENS
+   Keep non-Tailwind utility values here
+======================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Layout */
+  --container-max-width: 1280px;
+  --container-padding-mobile: 1rem;
+  --container-padding-tablet: 1.5rem;
+  --container-padding-desktop: 2rem;
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+
+  /* Shadows */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.18);
+
+  /* Typography scale */
+  --font-size-body: 1rem;
+  --line-height-body: 1.6;
+
+  --font-size-h1: clamp(2.75rem, 6vw, 5.5rem);
+  --font-size-h2: clamp(2rem, 4vw, 3.5rem);
+  --font-size-h3: clamp(1.5rem, 2.5vw, 2rem);
+  --font-size-h4: clamp(1.125rem, 2vw, 1.5rem);
+
+  --line-height-heading: 1;
+  --letter-spacing-heading: -0.03em;
+
+  /* Motion */
+  --transition-standard: 180ms ease;
+
+  /* Selection */
+  --selection-bg: #c9a24a;
+  --selection-text: #181818;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ========================================
+   CSS RESET
+======================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+}
+
+html {
+  hanging-punctuation: first last;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  overflow-x: clip;
+  @apply bg-bg-dark text-text-primary font-sans;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+button {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+#__next,
+#root {
+  isolation: isolate;
+}
+
+/* ========================================
+   BASE ELEMENTS
+======================================== */
+
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+main {
+  min-height: 100vh;
+}
+
+section {
+  position: relative;
+}
+
+/* ========================================
+   TYPOGRAPHY BASE
+======================================== */
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800;
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+p {
+  @apply text-text-secondary;
+}
+
+strong,
+b {
+  font-weight: 700;
+  color: inherit;
+}
+
+small {
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   FORM DEFAULTS
+======================================== */
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  transition:
+    border-color var(--transition-standard),
+    background-color var(--transition-standard),
+    box-shadow var(--transition-standard);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-secondary);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* ========================================
+   APP PRIMITIVES
+   Keep only meaningful reusable primitives
+======================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-mobile);
+}
+
+.section-spacing {
+  padding-block: 4rem;
+}
+
+.card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.surface-card {
+  @apply rounded-[var(--radius-lg)] border border-border bg-surface text-text-primary;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ========================================
+   BUTTON PRIMITIVES
+======================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    transform var(--transition-standard),
+    background-color var(--transition-standard),
+    border-color var(--transition-standard),
+    color var(--transition-standard),
+    opacity var(--transition-standard);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  @apply bg-accent text-text-dark;
+}
+
+.btn-secondary {
+  @apply border border-border bg-transparent text-text-primary;
+}
+
+.bg-bg-light .btn-secondary {
+  @apply text-text-dark;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+======================================== */
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: var(--container-padding-tablet);
+  }
+
+  .section-spacing {
+    padding-block: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: var(--container-padding-desktop);
+  }
+
+  .section-spacing {
+    padding-block: 7rem;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
