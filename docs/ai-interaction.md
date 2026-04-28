@@ -1,59 +1,172 @@
 # AI Interaction Guidelines
 
+**Last updated: 28 April 2026**
+
+---
+
 ## Communication
 
 - Be concise and direct
 - Explain non-obvious decisions briefly
 - Ask before large refactors or architectural changes
-- Don't add features not in the project spec
+- Don't add features not in the current feature spec
 - Never delete files without clarification
+
+---
 
 ## Workflow
 
-This is the common workflow that we will use for every single feature/fix:
+This is the standard process for every feature or fix.
 
-1. **Document** - Document the feature in @context/current-feature.md.
-2. **Branch** - Create new branch for feature, fix, etc
-3. **Implement** - Implement the feature/fix that I create in @context/current-feature.md
-4. **Test** - Verify it works in the browser. Implement unit testing later. Run `npm run build` and fix any errors
-5. **Iterate** - Iterate and change things if needed
-6. **Commit** - Only after build passes and everything works
-7. **Merge** - Merge to main
-8. **Delete Branch** - Delete branch after merge
-9. **Review** - Review AI-generated code periodically and on demand.
-10. Mark as completed in @context/current-feature.md and add to history
+### 1. Document
 
-Do NOT commit without permission and until the build passes. If build fails, fix the issues first.
+Create a feature spec file at `docs/features/[feature-name].md`.
+
+Use the hero spec (`docs/features/hero.md`) as the template. Every feature spec must include:
+
+- Current build state (what is confirmed working)
+- Design tokens relevant to the feature
+- Animation or interaction logic (if applicable)
+- Next iteration tasks with priority labels
+- What is not yet built
+
+### 2. Branch
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/[name]
+```
+
+### 3. Implement
+
+Build the feature in the **features playground first** — `src/app/features/page.tsx`
+using the features component at `src/components/feature/index.ts`.
+
+Verify it works correctly in the playground before touching any production component.
+Only move to the production component location once the feature is confirmed working.
+
+Before writing any code, confirm:
+
+- How the component follows `design.md`
+- How it aligns with `brand.md` principles
+- What Tailwind tokens and CSS custom properties will be used
+
+### 4. Test
+
+Verify in the browser. Run build and fix all errors before proceeding.
+
+```bash
+pnpm build
+```
+
+### 5. Iterate
+
+Make changes based on review. Keep changes minimal and scoped to the feature.
+
+### 6. Commit
+
+Only after build passes and everything works. Ask before committing.
+
+```bash
+git commit -m "feat: [description]"
+```
+
+### 7. Merge
+
+```bash
+git checkout main
+git merge feature/[name]
+```
+
+### 8. Delete branch
+
+```bash
+git branch -d feature/[name]
+```
+
+### 9. Update spec
+
+Mark tasks as complete in `docs/features/[feature-name].md`. Add completion date.
+
+---
+
+## Feature Spec Template
+
+When creating a new feature doc, use this structure:
+
+```markdown
+# Probell — [Feature Name] Spec
+
+**Version · Date**
+**Status: [In progress / Complete]**
+
+## Current Build — Confirmed Working ✓
+
+## Design Tokens
+
+## Animation / Interaction Logic (if applicable)
+
+## Next Iteration Tasks
+
+## What Is Not Yet Built
+```
+
+---
 
 ## Branching
 
-We will create a new branch for every feature/fix. Name branch **feature/[feature]** or **fix[fix]**, etc. Ask to delete the branch once merged.
+- Every feature or fix gets its own branch
+- Naming: `feature/[name]` or `fix/[name]`
+- Ask to delete branch after merge
+
+---
 
 ## Commits
 
-- Ask before committing (don't auto-commit)
-- Use conventional commit messages (feat:, fix:, chore:, etc.)
-- Keep commits focused (one feature/fix per commit)
-- Never put "Generated With Claude" in the commit messages
+- Ask before committing — do not auto-commit
+- Conventional commit messages: `feat:` · `fix:` · `chore:` · `refactor:`
+- One feature or fix per commit
+- Never include "Generated with Claude" in commit messages
+
+---
 
 ## When Stuck
 
-- If something isn't working after 2-3 attempts, stop and explain the issue
-- Don't keep trying random fixes
-- Ask for clarification if requirements are unclear
+- Stop after 2–3 failed attempts
+- Explain the issue clearly
+- Ask for clarification before trying again
+- Do not apply random fixes
 
-## Code Changes
+---
 
-- Make minimal changes to accomplish the task
-- Don't refactor unrelated code unless asked
-- Don't add "nice to have" features
+## Code Change Rules
+
+- Minimal changes to accomplish the task
+- Do not refactor unrelated code unless asked
+- Do not add unrequested features
 - Preserve existing patterns in the codebase
+- Resolve Tailwind canonical class warnings when encountered
+
+---
 
 ## Code Review
 
 Review AI-generated code periodically, especially for:
 
-- Security (auth checks, input validation)
-- Performance (unnecessary re-renders, N+1 queries)
-- Logic errors (edge cases)
-- Patterns (matches existing codebase?)
+- Security — auth checks, input validation
+- Performance — unnecessary re-renders, N+1 queries
+- Logic — edge cases and error states
+- Patterns — consistency with existing codebase
+
+---
+
+## Project Document Map
+
+| File                       | Read when                              |
+| -------------------------- | -------------------------------------- |
+| `docs/brand.md`            | Starting any new section or feature    |
+| `docs/design.md`           | Before writing any UI code             |
+| `docs/coding-standards.md` | Before writing any component or logic  |
+| `docs/git-process.md`      | Before branching or committing         |
+| `docs/features/[name].md`  | Before implementing a specific feature |

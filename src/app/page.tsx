@@ -1,5 +1,5 @@
 // components
-import { Hero } from "./components/servers";
+import { Hero } from "./components/clients";
 
 export default function Home() {
   return (

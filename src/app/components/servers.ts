@@ -1,1 +1,1 @@
-export { default as Hero } from "./hero";
+export { default as Feature } from "./feature";

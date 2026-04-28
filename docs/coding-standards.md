@@ -47,6 +47,8 @@ Example v4 configuration:
   --color-primary: oklch(50% 0.2 250);
 }
 
+---
+
 ## File Organization
 
 - Components: `src/components/[feature]/ComponentName.tsx`
@@ -55,11 +57,42 @@ Example v4 configuration:
 - Types: `src/types/[feature].ts`
 - Lib/Utils: `src/lib/[utility].ts`
 
+---
+
+## Component Barrel Files
+
+When adding a new component, always update the relevant barrel file:
+- `src/components/server.ts` — server components
+- `src/components/client.ts` — client components
+
+Do this in the same commit as the component. Never leave a component
+unregistered in the barrel file.
+
+---
+
+## Features Playground
+
+All new features are built and tested here first before moving to production components.
+
+- Playground page: `src/app/features/page.tsx`
+- Playground component: `src/components/feature/index.ts`
+
+Workflow:
+1. Build in playground — confirm it works
+2. Move to production component location
+3. Import into the relevant page
+
+Do not build directly in production components.
+
+---
+
 ## Page/Component Import Hygene
 
 - import client or server components into client/server.ts
 - @/components/server.ts - export { default as Hero } from "./hero";
 - organise import into seperater categories related to their purpose - components, internal libs (api, queries, utils, enums, types), react, npm
+
+---
 
 ## Naming
 
@@ -69,6 +102,8 @@ Example v4 configuration:
 - Constants: SCREAMING_SNAKE_CASE
 - Types/Interfaces: PascalCase (no prefix)
 
+---
+
 ## Styling
 
 - Tailwind CSS for all styling
@@ -76,9 +111,13 @@ Example v4 configuration:
 - No inline styles
 - Dark mode first, light mode as option
 
+---
+
 ## Database
 
 - Implementation of Hygraph CMS later
+
+---
 
 ## Code Quality
 

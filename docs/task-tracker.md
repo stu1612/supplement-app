@@ -1,46 +1,35 @@
 # Task Tracker
 
-> This file tracks the current development state.
-> Only update values — do NOT change the structure.
+**Last updated: 28 April 2026**
+
+> This file tracks active development state and completed feature history.
+> Claude should update this file at the start and end of every feature session.
+> Claude should update all completed features in an organised list.
+> Keep entries concise — one clear next action, one line summaries in history.
+> Backlog is managed separately in `docs/backlog.md`.
 
 ---
 
-## Current Feature
+## Active Feature
 
-- Name: hero
-- Branch: feature/hero
-- Status: Active
+None — ready for next feature.
 
----
-
-## Current Goal (Claude Interpretation)
-
-Implement the scroll-driven hero section with a sticky 200vh layout, product image reveal animation, stat callouts, and flavor selector panel. Flavor selection swaps the product image src (one PNG per flavor) and updates the `--accent` CSS variable across UI elements.
+> Pick next feature from `docs/backlog.md`, create branch, update this file.
 
 ---
 
-## Progress Notes
+## Completed Features
 
-- Spec reviewed, implementation plan approved
-- Branch created: feature/hero
-- Proceeding with Option A for flavor images (separate PNG per flavor)
+### Hero Section
 
----
+**Completed:** 28 April 2026
+**Branch:** `feature/hero` — merged and closed
+**Spec:** `docs/features/hero.md`
 
-## History
+Scroll-driven 200vh sticky hero implemented. Headline fades on scroll, product PNG rises into frame, stat callouts, named flavor chips, glow per flavor, urgency line, flavor-reactive CTA. Strawberry, Blueberry, Vanilla/CPB product images in place.
 
-### Feature:
+**Outstanding (carried to backlog):**
 
-- Branch:
-- Status: Completed
-
-Summary:
-
----
-
-### Feature:
-
-- Branch:
-- Status: Completed
-
-Summary:
+- Creatine flavor variants — images not yet created
+- Mobile responsive layout not yet tested
+- 5 Tailwind canonical class warnings unresolved in `hero/index.tsx`
