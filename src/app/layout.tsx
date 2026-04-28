@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Barlow_Condensed, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const interSans = Inter({
   variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-condensed",
+  subsets: ["latin"],
+  weight: ["700", "900"],
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -19,7 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${interSans.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${interSans.variable} ${barlowCondensed.variable} ${dmSans.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

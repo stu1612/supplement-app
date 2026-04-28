@@ -26,6 +26,8 @@
 
   /* Typography */
   --font-sans: "Inter", "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-condensed: "Barlow Condensed", sans-serif;
+  --font-dm-sans: "DM Sans", sans-serif;
 }
 
 /* ========================================
@@ -34,6 +36,9 @@
 ======================================== */
 
 :root {
+  /* Flavor accent — swapped at runtime by the Hero component */
+  --accent: #c0392b;
+
   /* Layout */
   --container-max-width: 1280px;
   --container-padding-mobile: 1rem;
@@ -375,6 +380,19 @@ select:disabled {
 
   .section-spacing {
     padding-block: 7rem;
+  }
+}
+
+/* ========================================
+   KEYFRAMES
+======================================== */
+
+@keyframes hero-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
   }
 }
 
