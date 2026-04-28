@@ -46,11 +46,10 @@ Do not start Claude Code until the spec is written and you have confirmed it is 
 ```
 Read the following docs before we start:
 - docs/brand.md
-- docs/design-system.md
+- docs/design.md
 - docs/coding-standards.md
 - docs/ai-interaction.md
 - docs/task-tracker.md
-- docs/backlog.md
 - docs/features/[name].md
 
 Confirm you have read them. Summarise the current feature and what you understand

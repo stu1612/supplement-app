@@ -21,7 +21,7 @@ const flavors: Flavor[] = [
     color: "#C0392B",
     tint: "rgba(192, 57, 43, 0.2)",
     glowColor: "rgba(192, 57, 43, 0.45)",
-    image: "/images/whey_strawberry.png",
+    image: "/images/hero/whey_strawberry.png",
   },
   {
     id: "blueberry",
@@ -29,7 +29,7 @@ const flavors: Flavor[] = [
     color: "#2D3A9E",
     tint: "rgba(45, 58, 158, 0.2)",
     glowColor: "rgba(45, 58, 158, 0.45)",
-    image: "/images/whey_blueberry.png",
+    image: "/images/hero/whey_blueberry.png",
   },
   {
     id: "vanilla",
@@ -37,7 +37,7 @@ const flavors: Flavor[] = [
     color: "#C8A84B",
     tint: "rgba(200, 168, 75, 0.2)",
     glowColor: "rgba(180, 130, 40, 0.35)",
-    image: "/images/whey_vanilla.png",
+    image: "/images/hero/whey_vanilla.png",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function Hero() {
         {/* Ambient background */}
         <div className="absolute inset-0 z-[-1]">
           <Image
-            src="/images/hero_gym_bg.jpg"
+            src="/images/hero/hero_gym_bg.jpg"
             alt=""
             fill
             className="object-cover object-center opacity-35"

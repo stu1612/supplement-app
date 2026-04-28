@@ -74,8 +74,8 @@ unregistered in the barrel file.
 
 All new features are built and tested here first before moving to production components.
 
-- Playground page: `src/app/features/page.tsx`
-- Playground component: `src/components/feature/index.ts`
+- Playground page: `src/app/(pages)/features/page.tsx`
+- Playground component: `src/components/feature/index.tsx`
 
 Workflow:
 1. Build in playground — confirm it works
