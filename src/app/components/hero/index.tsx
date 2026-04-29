@@ -8,9 +8,8 @@ type FlavorId = "strawberry" | "blueberry" | "vanilla";
 interface Flavor {
   id: FlavorId;
   label: string;
-  color: string;
-  tint: string;
-  glowColor: string;
+  color: string; // hex — sets --accent on root
+  rgb: string;   // "R, G, B" — sets --accent-rgb on root
   image: string;
 }
 
@@ -19,27 +18,30 @@ const flavors: Flavor[] = [
     id: "strawberry",
     label: "Strawberry",
     color: "#C0392B",
-    tint: "rgba(192, 57, 43, 0.2)",
-    glowColor: "rgba(192, 57, 43, 0.45)",
+    rgb: "192, 57, 43",
     image: "/images/hero/whey_strawberry.png",
   },
   {
     id: "blueberry",
     label: "Blueberry",
     color: "#2D3A9E",
-    tint: "rgba(45, 58, 158, 0.2)",
-    glowColor: "rgba(45, 58, 158, 0.45)",
+    rgb: "45, 58, 158",
     image: "/images/hero/whey_blueberry.png",
   },
   {
     id: "vanilla",
     label: "Vanilla",
-    color: "#C8A84B",
-    tint: "rgba(200, 168, 75, 0.2)",
-    glowColor: "rgba(180, 130, 40, 0.35)",
+    color: "#C9A84C",
+    rgb: "201, 168, 76",
     image: "/images/hero/whey_vanilla.png",
   },
 ];
+
+const flavorBgClass: Record<FlavorId, string> = {
+  strawberry: "bg-strawberry",
+  blueberry: "bg-blueberry",
+  vanilla: "bg-vanilla",
+};
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(Math.max(v, min), max);
@@ -84,6 +86,13 @@ export default function Hero() {
 
   const flavor = flavors.find((f) => f.id === activeFlavor)!;
 
+  // Sync --accent and --accent-rgb with active flavor
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--accent", flavor.color);
+    root.style.setProperty("--accent-rgb", flavor.rgb);
+  }, [flavor]);
+
   useEffect(() => {
     const onScroll = () => {
       const el = sectionRef.current;
@@ -109,8 +118,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="h-[200vh] bg-black">
+    <section ref={sectionRef} className="h-[200vh] bg-bg-dark">
       <div className="sticky top-0 h-screen overflow-hidden isolate">
+
         {/* Ambient background */}
         <div className="absolute inset-0 z-[-1]">
           <Image
@@ -119,13 +129,17 @@ export default function Hero() {
             fill
             className="object-cover object-center opacity-35"
           />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#000_65%)]" />
+          {/* Vignette — references bg-dark token, Tailwind can't compute this */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "radial-gradient(ellipse at center, transparent 20%, var(--color-bg-dark) 65%)" }}
+          />
         </div>
 
         {/* Left scroll progress bar */}
-        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-white/8 z-10">
+        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-text-primary/8 z-10">
           <div
-            className="bg-white/30"
+            className="bg-text-primary/30"
             style={{ height: `${anim.progressBarHeight}%` }}
           />
         </div>
@@ -135,27 +149,24 @@ export default function Hero() {
           className="absolute top-[15%] left-0 right-0 text-center px-8 z-10"
           style={{ opacity: anim.headlineOpacity }}
         >
-          <h1 className="font-condensed text-[clamp(3.5rem,8vw,4.5rem)] font-black uppercase tracking-[-1px] leading-none text-white">
+          <h1 className="font-condensed text-[clamp(3.5rem,8vw,4.5rem)] font-black uppercase tracking-[-1px] leading-none text-text-primary">
             THIS IS NOT A{" "}
-            <span style={{ color: flavor.color }}>KETTLEBELL.</span>
+            <span style={{ color: "var(--accent)" }}>KETTLEBELL.</span>
           </h1>
-          <p className="mt-4 font-dm-sans text-[clamp(0.875rem,2vw,1rem)] font-light text-white/30 tracking-[0.02em]">
+          <p className="mt-4 font-dm-sans text-[clamp(0.875rem,2vw,1rem)] font-light text-text-primary/30 tracking-[0.02em]">
             It&apos;s protein.
           </p>
         </div>
 
         {/* Kettlebell + color glow */}
         <div
-          className="absolute top-1/2 left-1/2 w-90 h-120 z-5"
-          style={{
-            transform: `translate(-50%, calc(-50% + ${anim.kettlebellY}px))`,
-          }}
+          className="absolute top-1/2 left-1/2 w-90 h-120 z-[5]"
+          style={{ transform: `translate(-50%, calc(-50% + ${anim.kettlebellY}px))` }}
         >
+          {/* Glow — flavor-reactive via --accent-rgb */}
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none transition-[background] duration-500 ease-in-out"
-            style={{
-              background: `radial-gradient(circle, ${flavor.glowColor} 0%, transparent 70%)`,
-            }}
+            style={{ background: "radial-gradient(circle, rgba(var(--accent-rgb), 0.45) 0%, transparent 70%)" }}
           />
           <Image
             src={flavor.image}
@@ -184,21 +195,18 @@ export default function Hero() {
                 className="flex items-center gap-3 cursor-pointer"
               >
                 <span
-                  className={`block w-9 h-9 rounded-full border-2 transition-all duration-200 ${
-                    isActive
-                      ? "border-white/90 scale-[1.18]"
-                      : "border-white/12"
+                  className={`block w-9 h-9 rounded-full border-2 transition-all duration-200 ${flavorBgClass[f.id]} ${
+                    isActive ? "border-text-primary/90 scale-[1.18]" : "border-text-primary/12"
                   }`}
                   style={{
-                    background: f.color,
                     boxShadow: isActive
-                      ? `0 0 0 2.5px ${f.color}, 0 0 18px ${f.color}90`
+                      ? "0 0 0 2.5px var(--accent), 0 0 18px rgba(var(--accent-rgb), 0.56)"
                       : "none",
                   }}
                 />
                 <span
                   className={`font-dm-sans text-xs font-medium tracking-[0.5px] transition-colors duration-200 ${
-                    isActive ? "text-white" : "text-white/60"
+                    isActive ? "text-text-primary" : "text-text-primary/60"
                   }`}
                 >
                   {f.label}
@@ -213,7 +221,7 @@ export default function Hero() {
           className="absolute bottom-[20%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-10"
           style={{ opacity: anim.hintOpacity }}
         >
-          <span className="font-dm-sans text-[0.625rem] font-medium uppercase tracking-[3px] text-white/40">
+          <span className="font-dm-sans text-[0.625rem] font-medium uppercase tracking-[3px] text-text-primary/40">
             Scroll
           </span>
           <svg
@@ -221,7 +229,7 @@ export default function Hero() {
             height="16"
             viewBox="0 0 16 16"
             fill="none"
-            className="text-white/40 animate-[hero-bounce_1.4s_ease-in-out_infinite]"
+            className="text-text-primary/40 animate-[hero-bounce_1.4s_ease-in-out_infinite]"
           >
             <path
               d="M8 3L8 13M8 13L3 8M8 13L13 8"
@@ -240,27 +248,27 @@ export default function Hero() {
         >
           {stats.map(({ value, label }) => (
             <div key={label} className="text-right">
-              <div className="font-condensed text-[2rem] font-black leading-none text-white">
+              <div className="font-condensed text-[2rem] font-black leading-none text-text-primary">
                 {value}
               </div>
-              <div className="font-dm-sans text-[0.625rem] font-medium uppercase tracking-[3px] text-white/40 mt-1">
+              <div className="font-dm-sans text-[0.625rem] font-medium uppercase tracking-[3px] text-text-primary/40 mt-1">
                 {label}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Stats — mobile horizontal row above kettlebell */}
+        {/* Stats — mobile horizontal row */}
         <div
           className="flex md:hidden absolute top-[10%] left-0 right-0 justify-center gap-10 z-10"
           style={{ opacity: anim.statsOpacity }}
         >
           {stats.map(({ value, label }) => (
             <div key={label} className="text-center">
-              <div className="font-condensed text-[clamp(1.5rem,6vw,2rem)] font-black leading-none text-white">
+              <div className="font-condensed text-[clamp(1.5rem,6vw,2rem)] font-black leading-none text-text-primary">
                 {value}
               </div>
-              <div className="font-dm-sans text-[0.5rem] font-medium uppercase tracking-[3px] text-white/40 mt-1">
+              <div className="font-dm-sans text-[0.5rem] font-medium uppercase tracking-[3px] text-text-primary/40 mt-1">
                 {label}
               </div>
             </div>
@@ -269,14 +277,16 @@ export default function Hero() {
 
         {/* Flavor panel — bottom */}
         <div
-          className="absolute bottom-0 left-0 right-0 bg-[linear-gradient(to_top,#000_60%,transparent)] pt-16 px-8 pb-10 z-10"
+          className="absolute bottom-0 left-0 right-0 pt-16 px-8 pb-10 z-10"
           style={{
+            background: "linear-gradient(to top, var(--color-bg-dark) 60%, transparent)",
             opacity: anim.flavorOpacity,
             transform: `translateY(${anim.flavorY}px)`,
             pointerEvents: anim.flavorOpacity > 0.05 ? "auto" : "none",
           }}
         >
           <div className="max-w-[480px] mx-auto flex flex-col items-center gap-5">
+
             {/* Mobile-only pill buttons */}
             <div className="flex flex-wrap justify-center gap-2 md:hidden">
               {flavors.map((f) => {
@@ -285,14 +295,18 @@ export default function Hero() {
                   <button
                     key={f.id}
                     onClick={() => setActiveFlavor(f.id)}
-                    className="font-dm-sans text-xs font-medium tracking-[0.5px] rounded-full py-2 px-[1.125rem] border transition-all duration-200"
-                    style={{
-                      borderColor: isActive
-                        ? f.color
-                        : "rgba(255,255,255,0.20)",
-                      background: isActive ? f.tint : "transparent",
-                      color: isActive ? "#fff" : "rgba(255,255,255,0.50)",
-                    }}
+                    className={`font-dm-sans text-xs font-medium tracking-[0.5px] rounded-full py-2 px-[1.125rem] border transition-all duration-200 ${
+                      isActive ? "" : "border-text-primary/20 text-text-primary/50"
+                    }`}
+                    style={
+                      isActive
+                        ? {
+                            borderColor: "var(--accent)",
+                            background: "rgba(var(--accent-rgb), 0.2)",
+                            color: "var(--color-text-primary)",
+                          }
+                        : undefined
+                    }
                   >
                     {f.label}
                   </button>
@@ -305,15 +319,17 @@ export default function Hero() {
               Limited First Drop · First 1,000 Units Only
             </p>
 
-            {/* CTA — flavor reactive */}
+            {/* CTA — flavor reactive via --accent */}
             <button
-              className="btn w-full max-w-[300px] text-white transition-[background] duration-300"
-              style={{ background: flavor.color }}
+              className="btn w-full max-w-[300px] text-text-primary transition-[background] duration-300"
+              style={{ background: "var(--accent)" }}
             >
               Add to Cart
             </button>
+
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -26,7 +26,7 @@ Dark, gritty, gym-floor energy. Bold typography. Real product photography. Minim
 
 | Element               | Decision                             |
 | --------------------- | ------------------------------------ |
-| Background            | Black base — `#000000`               |
+| Background            | Dark base — `bg-bg-dark` (`#181818`) |
 | Background texture    | Dark gym photo, `opacity-35` overlay |
 | Display font          | Barlow Condensed, 900, uppercase     |
 | Body font             | DM Sans, 300–500                     |
@@ -109,7 +109,7 @@ For runtime flavor-reactive values where Tailwind cannot compute the result:
 ✗ text-black        ← use text-text-dark
 ✗ bg-gray-*
 ✗ bg-zinc-*
-✗ bg-black          ← use bg-bg-dark
+✗ bg-black          ← use bg-bg-dark (#181818)
 ✗ bg-white          ← use bg-bg-light
 ✗ bg-[#anyvalue]    ← arbitrary color values
 ✗ text-[#anyvalue]  ← arbitrary color values

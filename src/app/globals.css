@@ -27,7 +27,7 @@
   /* Flavor accents */
   --color-strawberry: #c0392b;
   --color-blueberry: #2d3a9e;
-  --color-vanilla: #f3e5ab;
+  --color-vanilla: #c9a84c;
 
   /* Text */
   --color-text-primary: #ffffff;
@@ -275,11 +275,21 @@ section {
    express the value.
 ======================================== */
 
-.goals-card-overlay {
+.goals-overlay-dark {
+  /* 24,24,24 = #181818 = --color-bg-dark */
   background: linear-gradient(
     to top,
-    rgba(var(--accent-rgb), 0.75) 0%,
-    transparent 60%
+    rgba(24, 24, 24, 0.85) 40%,
+    transparent 100%
+  );
+}
+
+.goals-overlay-warm {
+  background: linear-gradient(
+    to top,
+    rgba(var(--accent-rgb), 0.85) 0%,
+    rgba(var(--accent-rgb), 0.4) 50%,
+    transparent 100%
   );
 }
 

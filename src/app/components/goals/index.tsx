@@ -39,13 +39,13 @@ const cards: Card[] = [
 
 export default function Goals() {
   return (
-    <section className="bg-white py-24 min-h-screen flex items-center">
-      <div className="container ">
+    <section className="bg-bg-light py-24 min-h-screen flex items-center">
+      <div className="container">
         <div className="flex flex-col items-center gap-4 text-center pb-12">
-          <h2 className="font-condensed text-[clamp(2.5rem,6vw,4rem)] font-black uppercase text-black leading-none">
+          <h2 className="font-condensed text-[clamp(2.5rem,6vw,4rem)] font-black uppercase text-text-dark leading-none">
             Every rep. Every goal. One brand.
           </h2>
-          <p className="font-dm-sans font-light text-[clamp(1rem,2vw,1.25rem)] text-black/50 max-w-xl">
+          <p className="font-dm-sans font-light text-[clamp(1rem,2vw,1.25rem)] text-text-dark/50 max-w-xl">
             Whether you&apos;re building strength, chasing energy, or
             accelerating recovery — Probell is built around how you train.
           </p>
@@ -64,13 +64,13 @@ export default function Goals() {
                 className="object-cover md:grayscale md:group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-500 ease-in-out"
               />
               {/* Overlay A — dark gradient */}
-              {/* <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.85)_40%,transparent)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 ease-in-out" /> */}
-              {/* Overlay B — red/amber tint gradient */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(180,60,20,0.85)_0%,rgba(200,100,20,0.4)_50%,transparent_100%)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 ease-in-out" />
+              {/* <div className="goals-overlay-dark absolute inset-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 ease-in-out" /> */}
+              {/* Overlay B — warm flavor-reactive gradient */}
+              <div className="goals-overlay-warm absolute inset-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 ease-in-out" />
               <div className="absolute inset-0 flex flex-col justify-end items-start text-left gap-6 p-6">
                 {/* Title — top of stack on mobile, bottom on desktop. Fades out on desktop hover. */}
                 <h3
-                  className="order-first md:order-last font-condensed text-2xl font-black uppercase text-white leading-none transition-all duration-500 ease-in-out md:group-hover:opacity-0 md:group-hover:translate-y-2"
+                  className="order-first md:order-last font-condensed text-2xl font-black uppercase text-text-primary leading-none transition-all duration-500 ease-in-out md:group-hover:opacity-0 md:group-hover:translate-y-2"
                   style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
                 >
                   {card.heading}
@@ -78,20 +78,20 @@ export default function Goals() {
                 {/* Description + CTA — below title on mobile, above on desktop. Fades in on desktop hover. */}
                 <div className="order-last md:order-first flex flex-col gap-4 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-500 ease-in-out">
                   <p
-                    className="font-dm-sans font-bold text-white line-clamp-2"
+                    className="font-dm-sans font-bold text-text-primary line-clamp-2"
                     style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
                   >
                     {card.description}
                   </p>
                   <p
-                    className="font-dm-sans font-light text-white line-clamp-3"
+                    className="font-dm-sans font-light text-text-primary line-clamp-3"
                     style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
                   >
                     {card.body}
                   </p>
                   <Link
                     href={card.route}
-                    className="self-start font-dm-sans text-sm font-medium text-white rounded-full px-4 py-2 border border-white bg-transparent hover:bg-white hover:text-black transition-colors duration-200 ease-in-out"
+                    className="self-start font-dm-sans text-sm font-medium text-text-primary rounded-full px-4 py-2 border border-text-primary bg-transparent hover:bg-bg-light hover:text-text-dark transition-colors duration-200 ease-in-out"
                   >
                     Recommendation →
                   </Link>
