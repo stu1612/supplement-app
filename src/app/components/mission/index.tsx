@@ -10,7 +10,7 @@ function rangeProgress(p: number, start: number, end: number) {
   return clamp((p - start) / (end - start), 0, 1);
 }
 
-export default function Playground() {
+export default function Mission() {
   const sectionRef = useRef<HTMLElement>(null);
   const [opacity, setOpacity] = useState({ line1: 0, line2: 0 });
 
@@ -23,7 +23,11 @@ export default function Playground() {
       const p = clamp(-rect.top / scrollable, 0, 1);
 
       setOpacity({
-        line1: clamp(rangeProgress(p, 0, 0.25) - rangeProgress(p, 0.35, 0.5), 0, 1),
+        line1: clamp(
+          rangeProgress(p, 0, 0.25) - rangeProgress(p, 0.35, 0.5),
+          0,
+          1,
+        ),
         line2: rangeProgress(p, 0.5, 0.65),
       });
     };
@@ -64,9 +68,8 @@ export default function Playground() {
               textShadow: "0 4px 24px rgba(0,0,0,0.9)",
             }}
           >
-            We built a{" "}
-            <span className="text-accent">kettlebell</span> that works like a{" "}
-            <span className="text-accent">supplement</span>.
+            We built a <span className="text-accent">kettlebell</span> that
+            works like a <span className="text-accent">supplement</span>.
           </p>
         </div>
       </div>

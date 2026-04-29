@@ -1,5 +1,5 @@
 // components
-import { Hero } from "./components/clients";
+import { Hero, Mission } from "./components/clients";
 import { Goals } from "./components/servers";
 
 export default function Home() {
@@ -7,6 +7,7 @@ export default function Home() {
     <main>
       <Hero />
       <Goals />
+      <Mission />
     </main>
   );
 }
