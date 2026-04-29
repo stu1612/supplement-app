@@ -1,6 +1,6 @@
 // components
-import { Hero, Mission } from "./components/clients";
-import { Goals } from "./components/servers";
+import { Hero } from "./components/clients";
+import { Goals, Mission } from "./components/servers";
 
 export default function Home() {
   return (

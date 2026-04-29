@@ -298,7 +298,7 @@ section {
 ======================================== */
 
 .mission-parallax-bg {
-  background-image: url("/images/mission/mission_bg.jpg");
+  background-image: url("/images/mission/mission_main.jpg");
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
@@ -308,15 +308,6 @@ section {
   .mission-parallax-bg {
     background-attachment: scroll;
   }
-}
-
-.mission-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.55) 50%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
 }
 
 /* ========================================

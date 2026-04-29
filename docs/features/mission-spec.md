@@ -1,20 +1,21 @@
-# Probell — Mission Section Spec
+# Probell — Collagen Feature Section Spec
 
-**Version 2 · 29 April 2026**
+**Version 1 · 29 April 2026**
 **Status: Ready for development**
 
 ---
 
 ## Overview
 
-A full-viewport brand statement section sitting between the Goals section and the
-next product section.
+A full-viewport parallax section that sits between the Goals section and the
+Products Grid section.
 
-The layout uses a blurred background with a sharp centred card — the Probell
-kettlebell product PNG breaks out of the bottom of the card, sitting below the
-card boundary as if resting on the ground beneath it.
+Its purpose is to spotlight the Probell Collagen product as a dedicated feature
+moment — a product discovery section with a premium card layout against a
+parallax background.
 
-No scroll animations. No CTA. One statement. Full stop.
+The visual approach adapts the AutoHaus card reference: blurred parallax
+background, sharp centred card, product PNG breaking out of the card bottom.
 
 ---
 
@@ -25,187 +26,221 @@ Hero (dark, scroll-driven)
 ↓
 Goals Section (white, three columns)
 ↓
-Mission Section (dark, full viewport)    ← this feature
+Collagen Feature Section (dark, parallax + card)    ← this feature
 ↓
-Next section (TBD)
-```
-
----
-
-## Layout — Full Structure
-
-```
-[Full viewport — blurred dark background]
-
-             ┌──────────────────────────┐
-             │                          │
-             │   BUILT TO [LIFT].       │
-             │   BUILT TO [FUEL].       │
-             │                          │
-             │   [dark card — bg-bg-dark│
-             │    rounded-2xl]          │
-             │                          │
-             └──────────┐  ┌────────────┘
-                        │  │
-                   [Kettlebell PNG]
-                   breaks card bottom
-                   centred horizontally
-                   extends below card edge
+Products Grid (white/light)
 ```
 
 ---
 
 ## Background Layer
 
-- Same image as the card interior: `public/images/mission/mission_bg.jpg`
-- Full viewport coverage: `w-full h-screen object-cover`
-- Heavily blurred: `blur-xl` or `blur-2xl`
-- Darkened: `brightness-[0.3]`
-- Position: `absolute inset-0 z-0`
+**Image:** `public/images/mission/mission_main.jpg`
 
-The background layer should have a parallax effect.
+- Full viewport coverage: `absolute inset-0 w-full h-full object-cover`
+- Heavily blurred: `blur-2xl`
+- Darkened: `brightness-[0.25]`
+- z-index: behind card layer
 
-- Background image scrolls at 50% of scroll speed
-- Implementation: background-attachment: fixed on the
-  background layer
-- Mobile fallback: background-attachment: scroll on
-  max-width: 768px — iOS Safari does not support fixed
-  attachment
+**Parallax:**
 
-The card and kettlebell do not move with the parallax —
-they remain centred and static as the background moves
-behind them.
+```css
+background-image: url("/images/mission/mission_main.jpg");
+background-attachment: fixed;
+background-position: center;
+background-size: cover;
+```
+
+**Mobile fallback — iOS Safari does not support fixed attachment:**
+
+```css
+@media (max-width: 768px) {
+  background-attachment: scroll;
+}
+```
+
+---
+
+## Section Container
+
+- Height: `h-screen`
+- Display: `flex items-center justify-center`
+- Position: `relative overflow-visible`
+- z-index: above background
 
 ---
 
 ## Centre Card
 
-- Position: centred horizontally and vertically in the viewport
-- Width: `max-w-lg` — tight enough to feel like a card, not a panel
-- Background: `bg-bg-dark` — solid dark, no texture
+- Max width: `max-w-md` — tight, premium feel
+- Background: `bg-bg-dark`
 - Border radius: `rounded-2xl`
-- Border: `border border-border` — subtle edge definition against the blurred bg
-- Padding: `px-10 pt-12 pb-0` — no bottom padding, kettlebell sits flush to bottom edge
-- Box shadow: `shadow-[0_32px_80px_rgba(0,0,0,0.8)]` — deep shadow grounds the card
-- `overflow: visible` — required so kettlebell PNG can break outside card boundary
-- z-index: above background layer
+- Border: `border border-border`
+- Padding: `px-10 pt-10 pb-0` — no bottom padding, product PNG sits flush
+- Box shadow: `shadow-[0_32px_80px_rgba(0,0,0,0.85)]`
+- `overflow: visible` — required for product PNG breakout
+- Position: `relative`
+
+### Card interior image
+
+Same image as background but sharp — no blur, no brightness reduction.
+
+```
+public/images/mission/mission_main.jpg
+```
+
+- Sits in the bottom half of the card
+- `object-cover`, fills card width
+- Height: approximately half the card height
+- Fades into the dark card top via gradient overlay:
+
+```css
+background: linear-gradient(
+  to bottom,
+  var(--color-bg-dark) 0%,
+  transparent 100%
+);
+```
+
+Applied as an absolute overlay on the image — dark at top, transparent at
+bottom so image bleeds through naturally.
 
 ---
 
-## Headline — Inside Card
+## Card Content — Top Half
+
+### Eyebrow label
 
 ```
-BUILT TO LIFT.
-BUILT TO FUEL.
+NEW — COLLAGEN SERIES
 ```
 
-**Typography:**
+- Font: `font-dm-sans` 500
+- Size: `text-xs`
+- Colour: `text-accent` (gold)
+- Letter spacing: `tracking-widest`
+- Uppercase
+- Margin bottom: `mb-4`
 
-- Font: `font-condensed` — Barlow Condensed 900
-- Size: `clamp(2.5rem, 5vw, 3.75rem)`
+### Headline
+
+```
+RECOVER STRONGER.
+LOOK THE PART.
+```
+
+- Font: `font-condensed` 900
+- Size: `clamp(1.75rem, 3.5vw, 2.5rem)`
 - Colour: `text-text-primary`
-- Transform: uppercase
-- Align: centre
+- Uppercase
 - Letter spacing: `tracking-tight`
 - Line height: `leading-none`
 
-**Accent words:**
+### Supporting line
 
-- `LIFT` → `text-accent` (gold `#c9a24a`)
-- `FUEL` → `text-accent` (gold `#c9a24a`)
-- Wrap each in `<span className="text-accent">`
+```
+Collagen protein for performance and recovery.
+Built for athletes who train hard and recover harder.
+```
 
-**Spacing below headline:** `mt-8` before kettlebell — gives visual breathing room
-between text and product
+- Font: `font-dm-sans` 300
+- Size: `text-sm`
+- Colour: `text-text-secondary`
+- Margin top: `mt-3`
+
+### CTA button
+
+```
+Shop Collagen →
+```
+
+- Style: pill button
+- Background: `bg-accent`
+- Text: `text-text-dark` (black)
+- Font: `font-dm-sans` 500, `text-sm`
+- Padding: `px-6 py-3`
+- Border radius: `rounded-full`
+- Margin top: `mt-6`
+- Hover: `opacity-90`
 
 ---
 
-## Kettlebell PNG — Card Breakout
+## Product PNG — Card Breakout
 
-**Image:** `public/images/whey_vanilla.png`
+**Placeholder image:** `public/images/whey_vanilla.png`
+
+Note: replace with collagen product PNG when client supplies asset.
 
 **Positioning:**
 
 - Centred horizontally within card
-- Positioned so the top ~30% of the kettlebell (the handle) sits inside the card
-- The body extends below the card bottom edge
-- Use `relative` on card, `absolute bottom-[-120px]` on image wrapper — adjust px
-  value to achieve the right breakout depth
-- `overflow: visible` must be set on the card container
+- `absolute bottom-[-100px]` — body extends below card edge
+- Card must have `overflow: visible`
+- Product sits in front of card: z-index above card
 
-**Size:** `w-48` to `w-56` — large enough to be the focal point, not so large
-it overwhelms the card
+**Size:** `w-40` — prominent but not overwhelming
 
-**Drop shadow on PNG:**
+**Drop shadow:**
 
 ```css
-filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.7));
+filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.75));
 ```
 
-Grounds the product against the dark card and blurred background.
-
-**z-index:** above the card
+**Note:** bottom offset value (`-100px`) should be adjusted in browser
+during the edit loop to achieve the right visual breakout depth.
 
 ---
 
-## Spacing — Section Level
+## Section Bottom Padding
 
-The kettlebell breaks 120px below the card. The section needs enough bottom
-padding to prevent the kettlebell overlapping the next section:
+Add enough bottom padding to the section so the product PNG does not
+overlap the next section:
 
-- Section: `h-screen flex items-center justify-center`
-- Add `pb-32` or `pb-40` to the section to give the kettlebell room at the bottom
+- Section: add `pb-28` or `pb-32` to account for product breakout
 
 ---
 
 ## Mobile Behaviour
 
-- Card scales to `max-w-sm` or `w-[90%]`
-- Headline scales down via `clamp`
-- Kettlebell breakout reduced — `bottom-[-80px]`, `w-36`
-- Background blur maintained
-- Card remains centred
+- Card scales to `w-[90%]` max
+- Headline scales via `clamp`
+- Product breakout reduced: `bottom-[-70px]`, `w-32`
+- Parallax disabled — `background-attachment: scroll`
+- Card interior image maintained
+- CTA pill maintained
 
 ---
 
-## Image Asset
+## Image Assets
 
-**Background + card interior:**
-Source from Unsplash — search: `athlete gym dark dramatic`
-Store at: `public/images/mission/mission_bg.jpg`
-
-Requirements:
-
-- Dark, moody, high contrast
-- Works heavily blurred as a background
-- Minimum 1920px wide
-
-**Note for client:** This image should be replaced with a client-supplied
-asset. Final asset minimum 1920px wide, PNG or JPG.
-
----
-
-## What Is Not In This Section
-
-- No CTA button
-- No stats or benefit callouts
-- No flavor switcher
-- No product names in copy
+| File                                     | Usage                                        | Status     |
+| ---------------------------------------- | -------------------------------------------- | ---------- |
+| `public/images/mission/mission_main.jpg` | Background (blurred) + card interior (sharp) | ✓ In place |
+| `public/images/whey_vanilla.png`         | Product PNG placeholder                      | ✓ In place |
 
 ---
 
 ## Component Location
 
 - Playground first: `src/app/(pages)/playground/page.tsx`
-- Production: `src/components/mission/index.tsx`
-- Page import: `src/app/page.tsx` — below Goals component
+- Production: `src/components/collagen/index.tsx`
+- Page import: `src/app/page.tsx` — below Goals, above Products Grid
 - Export: add to `src/components/server.ts` barrel file
+
+---
+
+## What Is Not In This Section
+
+- No flavor switcher
+- No stats row
+- No scroll-driven text animations
 
 ---
 
 ## What Is Not Yet Built
 
-- Parallax background-attachment: fixed implemented and tested
+- Component not yet created
+- Card interior image gradient overlay needs browser testing
+- Product PNG breakout depth needs browser adjustment
 - iOS Safari parallax fallback not yet tested
-- Kettlebell breakout positioning needs browser testing to dial in exact values
-- Mobile breakout depth not yet tested
+- Final collagen product PNG not yet supplied by client

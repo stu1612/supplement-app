@@ -1,73 +1,68 @@
-"use client";
-
-import { useRef, useEffect, useState } from "react";
-
-function clamp(v: number, min: number, max: number) {
-  return Math.min(Math.max(v, min), max);
-}
-
-function rangeProgress(p: number, start: number, end: number) {
-  return clamp((p - start) / (end - start), 0, 1);
-}
+import Image from "next/image";
 
 export default function Playground() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [opacity, setOpacity] = useState({ line1: 0, line2: 0 });
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
-      const p = clamp(-rect.top / scrollable, 0, 1);
-
-      setOpacity({
-        line1: clamp(rangeProgress(p, 0, 0.25) - rangeProgress(p, 0.35, 0.5), 0, 1),
-        line2: rangeProgress(p, 0.5, 0.65),
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="mission-parallax-bg h-[150vh] w-full relative"
-    >
-      <div className="mission-overlay absolute inset-0" />
-      <div
-        className="sticky top-0 h-screen flex items-center justify-center z-10"
-        style={{ boxShadow: "inset 0 0 200px rgba(0,0,0,0.7)" }}
-      >
-        <div className="grid w-[90%] max-w-[760px] text-center">
-          <p
-            className="[grid-area:1/1] font-condensed font-black uppercase tracking-tight leading-tight text-text-primary text-[clamp(1.75rem,4vw,3.5rem)]"
+    <section className="h-screen flex items-center justify-center relative overflow-visible pb-32">
+      {/* Blurred parallax background */}
+      <div className="mission-parallax-bg absolute inset-0 z-0 blur-md brightness-[0.25]" />
+
+      {/* Centre card */}
+      <div className="relative z-10 w-[90%] max-w-md bg-bg-dark-secondary rounded-2xl border border-surface shadow-[0_32px_80px_rgba(0,0,0,0.85)] overflow-visible flex flex-col">
+        {/* Content — top half */}
+        <div className="px-10 pt-10 relative z-10">
+          <p className="font-dm-sans font-medium text-xs text-accent tracking-widest uppercase mb-4">
+            New — Collagen Series
+          </p>
+          <h2 className="font-condensed font-black uppercase tracking-tight leading-none text-text-primary text-[clamp(1.75rem,3.5vw,2.5rem)]">
+            Recover stronger.
+            <br />
+            Look the part.
+          </h2>
+          <p className="font-dm-sans font-light text-sm text-text-secondary mt-3">
+            Collagen protein for performance and recovery.
+            <br />
+            Built for athletes who train hard and recover harder.
+          </p>
+          <button
+            className="btn rounded-full mt-6 mb-10 text-sm font-dm-sans hover:opacity-90 transition-opacity duration-200"
             style={{
-              opacity: opacity.line1,
-              transition: "opacity 300ms ease",
-              textShadow: "0 4px 24px rgba(0,0,0,0.9)",
+              background: "var(--color-accent)",
+              color: "var(--color-text-dark)",
+              paddingInline: "1.5rem",
             }}
           >
-            We didn&apos;t build a{" "}
-            <span className="text-accent">supplement</span> that looks like a{" "}
-            <span className="text-accent">kettlebell</span>.
-          </p>
-          <p
-            className="[grid-area:1/1] font-condensed font-black uppercase tracking-tight leading-tight text-text-primary text-[clamp(1.75rem,4vw,3.5rem)]"
+            Shop Collagen →
+          </button>
+        </div>
+
+        {/* Interior image — bottom half, sharp, fades into card at top */}
+        <div className="relative h-56 overflow-hidden rounded-b-2xl">
+          <Image
+            src="/images/mission/mission_main.jpg"
+            alt=""
+            fill
+            className="object-cover"
+          />
+          <div
+            className="absolute inset-0"
             style={{
-              opacity: opacity.line2,
-              transition: "opacity 300ms ease",
-              textShadow: "0 4px 24px rgba(0,0,0,0.9)",
+              background:
+                "linear-gradient(to bottom, var(--color-bg-dark-secondary) 0%, transparent 60%)",
             }}
-          >
-            We built a{" "}
-            <span className="text-accent">kettlebell</span> that works like a{" "}
-            <span className="text-accent">supplement</span>.
-          </p>
+          />
+        </div>
+
+        {/* Product PNG — breaks out of card bottom */}
+        <div
+          className="absolute -bottom-17.5 md:-bottom-25 left-1/2 -translate-x-1/2 w-40 h-52 md:w-48 md:h-60 z-20"
+          style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.75))" }}
+        >
+          <Image
+            src="/images/hero/whey_vanilla.png"
+            alt="Probell collagen product"
+            fill
+            className="object-contain"
+          />
         </div>
       </div>
     </section>
