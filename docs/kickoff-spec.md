@@ -1,47 +1,48 @@
 # Feature Kickoff Process
 
-**Last updated: 28 April 2026**
+**Last updated: 29 April 2026**
 
 > This document defines the standard process for starting and delivering every new feature.
-> Both the developer and Claude must follow this process without deviation.
+> Both the developer and Claude Code must follow this process without deviation.
 > No feature work begins until Steps 1 and 2 are complete.
+> The developer handles all git operations, playground cleanup, and production placement.
 
 ---
 
-## Overview
+## Responsibilities
 
-Every feature follows this sequence:
-
-1. Define scope in Claude Chat (claude.ai) — not in Claude Code
-2. Read docs and confirm understanding in Claude Code
-3. Start git process — branch created before any code
-4. Build in features playground first
-5. Developer reviews before moving to production
-6. Commit, merge, close
+| Responsibility                  | Owner                               |
+| ------------------------------- | ----------------------------------- |
+| Feature scope and spec          | Developer + Claude Chat (claude.ai) |
+| Doc read, implementation, edits | Claude Code                         |
+| Git operations                  | Developer                           |
+| Playground cleanup              | Developer                           |
+| Moving component to production  | Developer                           |
+| Task tracker updates            | Claude Code                         |
 
 ---
 
 ## Step 1 — Define the Feature in Claude Chat
 
-**Where:** claude.ai chat (not Claude Code)
+**Where:** claude.ai (not Claude Code)
 **Who:** Developer + Claude Chat
 
-Before opening Claude Code, define the feature here in the chat.
+Before opening Claude Code, define the feature in Claude Chat.
 
-Describe what you want to build. Claude Chat will:
+Claude Chat will:
 
 - Clarify scope and ask questions if needed
-- Produce a feature spec: `docs/features/[name].md`
-- Produce a plain English opening prompt to paste into Claude Code
+- Produce a feature spec saved as `docs/features/[name].md`
+- Confirm the spec is correct before Claude Code opens
 
-Do not start Claude Code until the spec is written and you have confirmed it is correct.
+Do not open Claude Code until the spec is confirmed.
 
 ---
 
 ## Step 2 — Claude Code Session Start
 
-**Where:** Claude Code terminal
-**First message every session — paste this before any instructions:**
+**Where:** Claude Code — Plan mode
+**First message every session:**
 
 ```
 Read the following docs before we start:
@@ -49,119 +50,167 @@ Read the following docs before we start:
 - docs/design.md
 - docs/coding-standards.md
 - docs/ai-interaction.md
+- docs/git-process.md
 - docs/task-tracker.md
 - docs/features/[name].md
 
-Confirm you have read them. Summarise the current feature and what you understand
-the goal to be before doing anything else.
+Once read:
+1. Confirm you have read all documents
+2. Summarise the feature goal in your own words
+3. List the specific tasks you understand need to be implemented
+4. State the next step you will take
+
+Do not take any action until the developer confirms your summary is correct.
 ```
 
-**Do not proceed until Claude Code's summary is correct.**
-
-If the summary is wrong or incomplete, correct it before any code is written.
+**Hard stop — do not proceed until developer replies: "confirmed, proceed"**
 
 ---
 
-## Step 3 — Git Process
+## Step 3 — Branch and Task Tracker
 
-Once the summary is confirmed, instruct Claude Code:
+Once the developer confirms the summary, Claude Code must complete these two steps in order before any implementation:
+
+**3a. Instruct the developer to create the branch:**
 
 ```
-Follow the git process in docs/git-process.md.
-Start from main, pull latest, and create the branch feature/[name].
-Tell me when the branch is created before doing anything else.
+Please create the feature branch:
+git checkout main
+git pull origin main
+git checkout -b feature/[name]
+Confirm when the branch is created.
 ```
 
-Wait for confirmation that the branch exists before proceeding.
+**3b. Update task tracker — once branch is confirmed:**
+
+Update `docs/task-tracker.md`:
+
+- Set Active Feature name and branch
+- Set Status: In Progress
+- List the feature goals from the spec under "What is to be done"
+
+Confirm to the developer that the tracker has been updated before proceeding.
+
+**Hard stop — do not begin implementation until both 3a and 3b are complete.**
 
 ---
 
-## Step 4 — Build in Features Playground
+## Step 4 — Build in Playground
 
-Remind Claude Code at the start of every implementation:
+All implementation happens in the playground page only.
+
+**Playground location:**
 
 ```
-Build this in the features playground first.
-- Playground page: src/app/features/page.tsx
-- Playground component: src/components/feature/index.ts
-
-Do not touch any production component until I confirm the playground version works.
+src/app/(pages)/playground/page.tsx
 ```
 
-Claude Code implements the feature in the playground only.
+Rules:
+
+- Build the entire feature in the playground page
+- Do not create additional files unless required by the feature spec
+- Do not touch any production page or component
+- Do not touch any existing component outside the playground
+
+When implementation is complete, Claude Code must:
+
+1. Summarise what was built
+2. List anything that deviated from the spec and why
+3. Ask: **"Are there any edits you would like to make before we close this feature?"**
 
 ---
 
-## Step 5 — Developer Review
+## Step 5 — Edit Loop
 
-**Who:** Developer only
+After the initial build is complete, an edit loop begins.
 
-Check the playground in the browser. Verify against the feature spec.
+The edit loop continues until the developer explicitly closes it.
 
-If changes are needed — iterate in the playground. Do not move forward until satisfied.
+**Claude Code behaviour during edit loop:**
 
-When ready, instruct Claude Code:
+- Make the requested edit in the playground
+- Confirm what was changed
+- Ask: **"Any further edits, or is the feature complete?"**
 
-```
-The playground version is confirmed.
-Move the component to its production location as defined in the feature spec.
-Do not change any other files.
-```
+This repeats until the developer says the feature is complete.
 
----
-
-## Step 6 — Validate Build
-
-```
-Run pnpm build.
-Fix any errors before proceeding.
-Do not commit until the build passes cleanly.
-```
+**Do not exit the edit loop until the developer explicitly says the feature is complete.**
 
 ---
 
-## Step 7 — Commit and Close
+## Step 6 — Feature Complete
 
-Once build passes and production component is confirmed working:
+When the developer confirms the feature is complete, Claude Code must:
+
+**6a. Update `docs/task-tracker.md`:**
+
+- Move feature from Active to Completed
+- Add completion date
+- Add a one line summary of what was built
+- Set Active Feature to: None — ready for next feature
+
+**6b. Generate a commit message:**
+
+Provide a conventional commit message for the developer to use:
 
 ```
-Follow the git process in docs/git-process.md.
-- Commit with an appropriate message
-- Push the feature branch
-- Merge to main
-- Push main to remote
-- Delete local and remote branch
+feat: [short description of what was built]
 
-Then update docs/task-tracker.md:
-- Mark this feature as complete with today's date
-- Add a one line summary to the completed features section
-- Set Active Feature to none
+- [key change 1]
+- [key change 2]
+- [key change 3]
+```
+
+**Claude Code stops here.** The developer handles all remaining steps.
+
+---
+
+## Developer — Remaining Steps After Feature Complete
+
+These steps are the developer's responsibility and are not performed by Claude Code:
+
+```bash
+# Review playground and clean up
+# Move component/styles to production location if needed
+# Import into relevant page
+
+pnpm build
+# Fix any errors
+
+git add .
+git commit -m "[use the generated commit message]"
+git push -u origin feature/[name]
+git checkout main
+git merge feature/[name]
+git push origin main
+git branch -d feature/[name]
+git push origin --delete feature/[name]
 ```
 
 ---
 
 ## Control Points
 
-These are the moments where the developer reviews and approves before Claude proceeds.
-
-| Step                    | Gate                                                        |
-| ----------------------- | ----------------------------------------------------------- |
-| Feature spec            | Developer confirms spec is correct before Claude Code opens |
-| Session start summary   | Developer confirms Claude's understanding before any code   |
-| Branch creation         | Developer confirms branch exists before implementation      |
-| Playground → production | Developer reviews in browser and explicitly approves        |
-| Commit                  | Developer approves after build passes                       |
-| Merge                   | Developer approves after final review                       |
-
-**Claude Code does not pass a control point without explicit developer instruction.**
+| Step                  | Gate                                                      | Owner       |
+| --------------------- | --------------------------------------------------------- | ----------- |
+| Feature spec          | Confirmed correct in Claude Chat before Claude Code opens | Developer   |
+| Session start summary | Developer confirms understanding before any action        | Developer   |
+| Branch creation       | Developer confirms branch exists before tracker update    | Developer   |
+| Tracker updated       | Claude Code confirms update before implementation         | Claude Code |
+| Edit loop             | Continues until developer says feature is complete        | Developer   |
+| Commit message        | Generated by Claude Code, used by developer               | Claude Code |
+| Git operations        | Developer only                                            | Developer   |
+| Production placement  | Developer only                                            | Developer   |
 
 ---
 
 ## Rules
 
-- Never define feature scope inside Claude Code — always define it here in Claude Chat first
-- Never skip the Step 2 doc read and summary — it takes 30 seconds and prevents misaligned work
-- Never move from playground to production without a browser review
-- Never commit without a passing build
-- Never auto-commit — always ask for approval first
+- Never define feature scope inside Claude Code — always in Claude Chat first
+- Never skip the Step 2 doc read and summary
+- Never implement before branch is created and tracker is updated
+- Never build outside the playground page
+- Never touch production pages or components during implementation
+- Never auto-commit or run git merge/push — developer handles all git
+- Never exit the edit loop without explicit developer confirmation
 - One feature per branch — no mixing of unrelated changes

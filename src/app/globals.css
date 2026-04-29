@@ -2,23 +2,34 @@
 
 /* ========================================
    THEME TOKENS (Tailwind v4)
-   These generate utilities like:
-   bg-bg-dark, text-text-primary, border-border, bg-accent, font-sans
+   Token definitions only.
+   These generate utility classes:
+   bg-bg-dark, text-text-primary, border-border,
+   bg-accent, font-sans, font-condensed, font-dm-sans
+   
+   DO NOT apply these to elements here.
+   Use Tailwind utility classes in components.
 ======================================== */
 
 @theme {
-  /* Colors */
+  /* Backgrounds */
   --color-bg-dark: #181818;
   --color-bg-dark-secondary: #121212;
   --color-bg-light: #f5f5f5;
   --color-surface: #1f1f1f;
+
+  /* Borders */
   --color-border: #2a2a2a;
+
+  /* Accent — default gold */
   --color-accent: #c9a24a;
 
+  /* Flavor accents */
   --color-strawberry: #c0392b;
   --color-blueberry: #2d3a9e;
   --color-vanilla: #f3e5ab;
 
+  /* Text */
   --color-text-primary: #ffffff;
   --color-text-secondary: #a0a0a0;
   --color-text-dark: #181818;
@@ -32,11 +43,15 @@
 
 /* ========================================
    ROOT TOKENS
-   Keep non-Tailwind utility values here
+   Runtime and non-Tailwind values only.
+   These are not Tailwind utilities — they
+   are used directly in component styles
+   where Tailwind cannot compute the value
+   at runtime (e.g. flavor-reactive colors).
 ======================================== */
 
 :root {
-  /* Flavor accent — swapped at runtime by the Hero component */
+  /* Flavor accent — swapped at runtime by Hero component */
   --accent: #c0392b;
   --accent-rgb: 192, 57, 43;
 
@@ -53,18 +68,6 @@
 
   /* Shadows */
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.18);
-
-  /* Typography scale */
-  --font-size-body: 1rem;
-  --line-height-body: 1.6;
-
-  --font-size-h1: clamp(2.75rem, 6vw, 5.5rem);
-  --font-size-h2: clamp(2rem, 4vw, 3.5rem);
-  --font-size-h3: clamp(1.5rem, 2.5vw, 2rem);
-  --font-size-h4: clamp(1.125rem, 2vw, 1.5rem);
-
-  --line-height-heading: 1;
-  --letter-spacing-heading: -0.03em;
 
   /* Motion */
   --transition-standard: 180ms ease;
@@ -98,9 +101,8 @@ html {
 body {
   min-height: 100vh;
   overflow-x: clip;
-  /* @apply bg-bg-dark text-text-primary font-sans; */
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-body);
+  font-size: 1rem;
+  line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -155,7 +157,6 @@ ol[role="list"] {
 }
 
 a {
-  /* color: inherit; */
   text-decoration: none;
 }
 
@@ -189,6 +190,7 @@ h6 {
 
 /* ========================================
    BASE ELEMENTS
+   Structure and behaviour only — no color.
 ======================================== */
 
 ::selection {
@@ -215,90 +217,8 @@ section {
 }
 
 /* ========================================
-   TYPOGRAPHY BASE
-======================================== */
-
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 800;
-  line-height: var(--line-height-heading);
-  letter-spacing: var(--letter-spacing-heading);
-}
-
-h1 {
-  font-size: var(--font-size-h1);
-}
-
-h2 {
-  font-size: var(--font-size-h2);
-}
-
-h3 {
-  font-size: var(--font-size-h3);
-}
-
-h4 {
-  font-size: var(--font-size-h4);
-}
-
-/* p {
-  @apply text-text-secondary;
-} */
-
-strong,
-b {
-  font-weight: 700;
-  color: inherit;
-}
-
-small {
-  font-size: 0.875rem;
-}
-
-/* ========================================
-   FORM DEFAULTS
-======================================== */
-
-input,
-textarea,
-select {
-  width: 100%;
-  border: 1px solid var(--color-border);
-  /* background-color: var(--color-surface);
-  color: var(--color-text-primary); */
-  border-radius: var(--radius-md);
-  padding: 0.875rem 1rem;
-  transition:
-    border-color var(--transition-standard),
-    background-color var(--transition-standard),
-    box-shadow var(--transition-standard);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-text-secondary);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-accent);
-}
-
-button:disabled,
-input:disabled,
-textarea:disabled,
-select:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-
-/* ========================================
-   APP PRIMITIVES
-   Keep only meaningful reusable primitives
+   LAYOUT PRIMITIVES
+   Structure only — no color applied.
 ======================================== */
 
 .container {
@@ -317,13 +237,12 @@ select:disabled {
   box-shadow: var(--shadow-soft);
 }
 
-.surface-card {
-  @apply rounded-[var(--radius-lg)] border border-border bg-surface text-text-primary;
-  box-shadow: var(--shadow-soft);
-}
-
 /* ========================================
    BUTTON PRIMITIVES
+   Structure and transition only.
+   Color applied via Tailwind tokens in
+   components: btn-primary uses bg-accent,
+   btn-secondary uses border-border.
 ======================================== */
 
 .btn {
@@ -348,16 +267,34 @@ select:disabled {
   transform: translateY(-1px);
 }
 
-.btn-primary {
-  @apply bg-accent text-text-dark;
+/* ========================================
+   RUNTIME UTILITY CLASSES
+   These exist because Tailwind cannot
+   compute runtime CSS variable values.
+   Use only when a Tailwind class cannot
+   express the value.
+======================================== */
+
+.goals-card-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(var(--accent-rgb), 0.75) 0%,
+    transparent 60%
+  );
 }
 
-.btn-secondary {
-  @apply border border-border bg-transparent text-text-primary;
-}
+/* ========================================
+   KEYFRAMES
+======================================== */
 
-.bg-bg-light .btn-secondary {
-  @apply text-text-dark;
+@keyframes hero-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
 }
 
 /* ========================================
@@ -381,32 +318,6 @@ select:disabled {
 
   .section-spacing {
     padding-block: 7rem;
-  }
-}
-
-/* ========================================
-   GOALS SECTION
-======================================== */
-
-.goals-card-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(var(--accent-rgb), 0.75) 0%,
-    transparent 60%
-  );
-}
-
-/* ========================================
-   KEYFRAMES
-======================================== */
-
-@keyframes hero-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(5px);
   }
 }
 

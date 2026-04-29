@@ -28,8 +28,16 @@ None — ready for next feature.
 
 Scroll-driven 200vh sticky hero implemented. Headline fades on scroll, product PNG rises into frame, stat callouts, named flavor chips, glow per flavor, urgency line, flavor-reactive CTA. Strawberry, Blueberry, Vanilla/CPB product images in place.
 
-**Outstanding (carried to backlog):**
+### Goals Section
 
-- Creatine flavor variants — images not yet created
-- Mobile responsive layout not yet tested
-- 5 Tailwind canonical class warnings unresolved in `hero/index.tsx`
+**Completed:** 28 April 2026
+**Branch:** `feature/goals` — merged and closed
+**Spec:** `docs/features/goals-section.md`
+
+Feature card:
+Swap hover behaviour: title fades out, description + CTA fade in (not stacked).
+
+- Overlay variants: dark gradient (A) and red/amber tint (B) — A commented, B active
+- All text updated to white with text-shadow for legibility
+- CTA restyled as pill with border-white, hover:bg-white/text-black
+- Mobile: CTA always visible, gap-6 spacing, overlay always on at 0.85 opacity
